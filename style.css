@@ -1,0 +1,156 @@
+#container {
+    height: 500px;
+    width: 870px;
+    border: 2px solid black;
+    position: relative;
+    overflow: hidden;
+    background: #B3A3BA;
+}
+#sprite {
+    width: 50px;
+    height: 50px;
+    background: #28193D;
+    position: absolute;
+}body{
+    text-align: center;
+}#start{
+    position: absolute;
+    left: 45%;
+    top: 50%;
+    border: 4px solid #68507B;
+    background-color: #B3A3BA;
+    color: #68507B;
+    width:100px;
+    height: 50px;
+}#deathMsg{
+    position: absolute;
+    left: 30%;
+    top: 30%;
+    color: black;
+    z-index: 5;
+}#replay{
+    position: absolute;
+    left: 40%;
+    top: 60%;
+    border: 4px solid black;
+    background-color: red;
+    color: black;
+    z-index: 6;
+}#death_popup{
+    background: red;
+    height: 200px;
+    width: 350px;
+    position: absolute;
+    top: 35%;
+    left:30%;
+    z-index: 3;
+    border: 4px solid black;
+}
+body {
+height: 100vh;
+background: #D9D8D9;
+}
+
+.radio {
+background: #454857;
+padding: 4px;
+border-radius: 3px;
+box-shadow: inset 0 0 0 3px rgba(35, 33, 45, 0.3),
+0 0 0 3px rgba(185, 185, 185, 0.3);
+position: absolute;
+width:300px;
+right:10px;
+top:35px;
+}
+
+.radio input {
+width: 45%;
+height: 100%;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+outline: none;
+cursor: pointer;
+border-radius: 2px;
+padding: 4px 8px;
+background: #454857;
+color: #bdbdbdbd;
+font-size: 14px;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+"Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+transition: all 100ms linear;
+}
+
+#hard:checked {
+background-image: linear-gradient(180deg, 	#FF0000, 	#8B0000);
+color: #fff;
+box-shadow: 0 1px 1px #0000002e;
+text-shadow: 0 1px 0px #79485f7a;
+}#easy:checked {
+background-image: linear-gradient(180deg, #95d891, #74bbad);
+color: #fff;
+box-shadow: 0 1px 1px #0000002e;
+text-shadow: 0 1px 0px #79485f7a;
+}
+
+.radio input:before {
+content: attr(label);
+display: inline-block;
+text-align: center;
+width: 100%;
+}#scorename{
+color:#B3A3BA
+}#score{
+margin: auto;
+}
+ 
+ #mode_select{
+   margin: auto;
+
+ }
+
+.radio2{
+ position:absolute;
+ right: 55%;
+}
+
+ 
+ .radio2 input {
+	width: 90px;
+	height: 30px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
+	border-radius: 0px;
+	padding: 4px 8px;
+	background: #454857;
+	color: #bdbdbdbd;
+	font-size: 14px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	transition: all 100ms linear;
+}
+
+#mode_easy:checked {
+	background-image: linear-gradient(180deg, #95d891, #74bbad);
+	color: #fff;
+	box-shadow: 0 1px 1px #0000002e;
+	text-shadow: 0 1px 0px #79485f7a;
+}
+#mode_hard:checked {
+	background-image: linear-gradient(180deg, #FF0000, #8B0000);
+	color: #fff;
+	box-shadow: 0 1px 1px #0000002e;
+	text-shadow: 0 1px 0px #79485f7a;
+}
+
+.radio2 input:before {
+	content: attr(label);
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}

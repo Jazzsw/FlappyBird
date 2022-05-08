@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2 id = 'score'>Score: 0</h2>
+    <div id='container'>
+        <div id="sprite"></div>
+        <button id="start">Start Game</button>
+        <div id="death_popup">
+        <h2 id ='deathMsg'>GAME OVER!</h2>
+        <button id ="replay">Play Again</button>
+    </div>
+    </div>
+    
+    <div class="radio">
+        <h2 id="scorename">Scores</h2>
+        <input label="Easy" type="radio" id="easy" name="mode" checked>
+        <input label="Challenging" type="radio" id="hard" name="mode">
+        <div id="scoreboard">
+    
+        </div>
+    </div>
+
+
+<!-- chalange select -->
+        <div class="radio2">
+            <input label="Easy" type="radio" id="mode_easy" name="mode2" checked>
+            <input label="Challenging" type="radio" id="mode_hard" name="mode2">
+        </div>
+  
+      
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-database.js"></script>
+
+    <script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyBNSiRO5XRUBz_MKA5F1HiUrxoUypL1mPw",
+  authDomain: "flappy-scores.firebaseapp.com",
+  projectId: "flappy-scores",
+  storageBucket: "flappy-scores.appspot.com",
+  messagingSenderId: "916803610806",
+  appId: "1:916803610806:web:a1d8b677fd9a283eb29e17",
+  measurementId: "G-BP1VNFCNT1"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+    </script>
+
+    <script>
+
+
+        const C_HEIGHT = 500;
+        const C_WIDTH = 1000;
+        const S_START_Y = 500 / 2;
+        const S_START_X = C_WIDTH / 3;
+        const S_WIDTH = 50;
+        const S_HEIGHT = 50;
+        const PIPE_WIDTH = 100;
+        const ALL_PIPES = []
+        const CLOSE_PIPES =[]
+        score = 0;
+        dead = 'false'
+
+        function sprite_init() {
+            var death_msg = document.getElementById('deathMsg')
+            death_msg.style.display= 'none'
+            var replay = document.getElementById('replay')
+            replay.style.display = 'none'
+            var death_popup = document.getElementById('death_popup')
+            death_popup.style.display = 'none'
+
+            let sprite = document.getElementById("sprite");
+            sprite.style.top = S_START_Y + "px";
+            sprite.style.left = S_START_X + "px";
+
+            
+            let grass = document.createElement('div')
+            grass.style.position = 'absolute'
+            grass.style.height = "10px"
+            grass.style.width = '1000px';
+            grass.style.bottom = '0px'
+            grass.style.left = '0px'
+            grass.style.background = "#68507B"
+            container.appendChild(grass)
+            
+
+            let roof = document.createElement('div')
+            roof.style.position = 'absolute'
+            roof.style.width = '1000px';
+            roof.style.height = "10px"
+            roof.style.background = "#68507B"
+            container.appendChild(roof)
+            roof.style.top = '0px';
+
+        }
+
+        function gravity_init(mod) {
+            let sprite = document.getElementById("sprite");
+            let pos_y = S_START_Y;
+            let interval = setInterval(function () {
+                if (pos_y < C_HEIGHT - S_HEIGHT - 10 && pos_y > 10) {
+                    pos_y = parseInt(sprite.style.top) + mod;
+                    sprite.style.top = pos_y + "px";
+                }else{
+                    clearInterval(interval)
+                    dead = "true"
+                    return;
+                }
+            }, 100)
+        }
+
+        function fly_jump_init(mod){
+            let sprite = document.getElementById("sprite");
+            
+            document.addEventListener("keydown",function(e){
+                if(e.which == 32){
+                    sprite.style.top = parseInt(sprite.style.top) - mod + "px";
+                }
+            })
+        }
+
+        function pipes_init(){
+            let pipe_btm = document.createElement('div')
+            let pipe_top = document.createElement('div')
+            pipe_btm.style.position = 'absolute'
+            pipe_top.style.position = 'absolute'
+            pipe_top.style.background = "#68507B";
+            pipe_btm.style.background = "#68507B";
+            pipe_top.style.left= C_WIDTH + "px"
+            pipe_btm.style.left = C_WIDTH + "px"
+            pipe_top.style.width= PIPE_WIDTH + "px"
+            pipe_btm.style.width = PIPE_WIDTH + "px"
+            let container = document.getElementById('container')
+            container.appendChild(pipe_btm)
+            container.appendChild(pipe_top)
+            let gap = 4*S_HEIGHT;
+
+
+            
+
+            let gap_pos = Math.floor(Math.random()*(C_HEIGHT-gap))
+            let pipe_btm_pos_top = C_HEIGHT - gap_pos;
+            let pipe_btm_height = C_HEIGHT - pipe_btm_pos_top;
+            let pipe_top_pos_btm = gap_pos + gap;
+
+            pipe_btm.style.height= gap_pos + 'px';
+            pipe_btm.style.top= C_HEIGHT - gap_pos + 'px';
+
+
+            pipe_top.style.height = (C_HEIGHT - gap_pos) - gap + "px"
+            return [pipe_btm, pipe_top]
+        }
+
+
+        function pipes_road(speed){
+
+            let pipes = pipes_init()
+
+            ALL_PIPES.push(pipes)
+    
+           let pipe_btm = pipes[0]
+           let pipe_top = pipes[1]
+
+            let interval = setInterval(function(){
+                pipe_btm.style.left = parseInt(pipe_btm.style.left)-1 +'px';
+                pipe_top.style.left = parseInt(pipe_top.style.left)-1 + 'px';
+                if (parseInt(pipe_top.style.left) == -100){
+                    clearInterval(interval)
+                    ALL_PIPES.shift()
+                    pipe_btm.remove()
+                    pipe_top.remove()
+                }
+            //     if (dead=="true"){
+                    
+            //     clearInterval(interval)
+            // }
+            },speed)
+
+            
+
+
+
+        }
+
+        function is_death(){
+            let sprite_left = S_START_X
+            let sprite = document.getElementById("sprite");
+
+            let interval = setInterval(function(){
+                let sprite = document.getElementById("sprite");
+            
+                for (let i =0; i<ALL_PIPES.length; i++){
+                    danger = 'false'
+    
+                    if(parseInt(ALL_PIPES[i][0].style.left) < S_START_X + S_WIDTH && parseInt(ALL_PIPES[i][0].style.left) + PIPE_WIDTH > S_START_X){
+                      danger = 'true'  
+                    }
+
+                    if (danger=="true"){
+
+                       if(parseInt(sprite.style.top) <= parseInt(ALL_PIPES[i][1].style.height) || parseInt(sprite.style.top) +S_HEIGHT >= parseInt(ALL_PIPES[i][1].style.height) + (4*S_HEIGHT)){ 
+                           dead = "true"
+                           sprite.style.display = 'none'
+                       }
+                    }
+                }
+            },10)
+        }
+
+
+function scoreCount(){
+   //let sprite_left = S_START_X
+    let interval = setInterval(function(){
+        // for (let i =0; i<ALL_PIPES.length; i++){
+            // if(parseInt(ALL_PIPES[i][0].style.left) < S_START_X + S_WIDTH && parseInt(ALL_PIPES[i][0].style.left) + PIPE_WIDTH > S_START_X){
+                        scoreBord = document.getElementById('score')
+                        score = score+1
+                        console.log(score)
+                        scoreBord.innerHTML = ("Score: " + score)
+                    // }
+                // }
+                if (dead=="true"){
+                    clearInterval(interval)
+                    var death_msg = document.getElementById('deathMsg')
+                    var replay = document.getElementById('replay')
+                    var death_popup = document.getElementById('death_popup')
+                    death_popup.style.display = 'block'
+                    death_msg.style.display= 'block'
+                    replay.style.display ='block'
+                    
+                }
+
+                },200)
+
+                
+}
+
+
+
+
+
+sprite_init();
+
+document.getElementById('start').addEventListener('click',function(){
+
+    document.getElementById('start').style.display = 'none'
+
+    if (document.getElementById('mode_easy').checked){
+        gravity_init(10);
+        fly_jump_init(30);
+        scoreCount();
+        pipes_road(10)
+        is_death()
+
+        let interval = setInterval(function(){
+        pipes_road(10)
+        },3000)
+
+    }else if(document.getElementById('mode_hard').checked){
+        gravity_init(20);
+        fly_jump_init(50);
+        pipes_road(2)
+        scoreCount();
+        is_death()
+
+        let interval = setInterval(function(){
+        pipes_road(2)
+        },1500)
+
+    }
+
+
+    })
+
+
+
+document.getElementById('replay').addEventListener('click',function(){
+window.location.reload()
+
+    })
+        
+
+    </script>
+</body>
+
+</html>

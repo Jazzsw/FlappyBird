@@ -48,7 +48,7 @@ var width = FrameWidth*0.75
             grass.style.width = '100%';
             grass.style.bottom = '0px'
             grass.style.left = '0px'
-            grass.style.background = "#68507B"
+            grass.style.background = "#7861f4"
             container.appendChild(grass)
             
 
@@ -57,7 +57,7 @@ var width = FrameWidth*0.75
             roof.style.position = 'absolute'
             roof.style.width = '100%';
             roof.style.height = "10px"
-            roof.style.background = "#68507B"
+            roof.style.background = "#7861f4"
             container.appendChild(roof)
             roof.style.top = '0px';
 
@@ -99,8 +99,8 @@ var width = FrameWidth*0.75
             pipe_top.id= 'pipe_top'
             pipe_btm.style.position = 'absolute'
             pipe_top.style.position = 'absolute'
-            pipe_top.style.background = "#68507B";
-            pipe_btm.style.background = "#68507B";
+            pipe_top.style.background = "#7861f4";
+            pipe_btm.style.background = "#7861f4";
             pipe_top.style.left= C_WIDTH + "px"
             pipe_btm.style.left = C_WIDTH + "px"
             pipe_top.style.width= PIPE_WIDTH + "px"
@@ -289,11 +289,11 @@ let interval = setInterval(function(){
 
 
 
-    if (score==10){
-        document.getElementById('sprite').style.background='pink'
-        document.getElementById('pipe_top').style.background = '#03045e'
-        document.getElementById('pipe_btm').style.background = '#03045e'
-    }
+    // if (score==10){
+    //     document.getElementById('sprite').style.background='pink'
+    //     document.getElementById('pipe_top').style.background = '#03045e'
+    //     document.getElementById('pipe_btm').style.background = '#03045e'
+    // }
 
 },200);
 
@@ -343,6 +343,7 @@ let interval = setInterval(function(){
 
 
    var top_100_easy = document.createElement('select')
+   top_100_easy.className ='top_drop'
    document.getElementById('scoreboard_easy').appendChild(top_100_easy)
 
    var show_more = document.createElement('option')
@@ -411,6 +412,7 @@ database.ref("/hard").once('value',function(snapshot){
 
 
    var top_100_hard = document.createElement('select')
+   top_100_easy.className ='top_drop'
    document.getElementById('scoreboard_hard').appendChild(top_100_hard)
 
    var show_more = document.createElement('option')

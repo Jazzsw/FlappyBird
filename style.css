@@ -1,23 +1,25 @@
 #container {
     height: 500px;
     width: 75%;
-    border: 2px solid black;
+    border: 5px solid #7861f4;
+
     position: relative;
     overflow: hidden;
-    background: #B3A3BA;
+    background: #111111;
+    box-shadow: 0px 0px 50px 4px #7861f4;
 }
 #sprite {
     width: 50px;
     height: 50px;
-    background: #28193D;
+    background: #5170ed;
     position: absolute;
 }#start{
     position: absolute;
     left: 45%;
     top: 50%;
-    border: 4px solid #68507B;
-    background-color: #B3A3BA;
-    color: #68507B;
+    border: 4px solid #7861f4;
+    background-color: #1111;
+    color: #7861f4;
     width:100px;
     height: 50px;
 }
@@ -37,6 +39,7 @@
     padding: 5px;
 }
 #death_popup{
+    text-align: center;
     background: #8B0000;
     height: 197px;
     width: 50%;
@@ -47,13 +50,14 @@
     border: 4px solid black;
 }
 body {
-height: 98vh;
-text-align: center;
+height: 96vh;
+/* text-align: center; */
 /* background: #D9D8D9; */
 background: #111111;
 }
 
 .radio {
+text-align: center;
 background: #454857;
 padding: 1px;
 border-radius: 3px;
@@ -62,7 +66,7 @@ box-shadow: inset 0 0 0 3px rgba(35, 33, 45, 0.3),
 position: absolute;
 width:20%;
 right:2px;
-top:35px;
+top: 150px;
 overflow: visible;
 }
 
@@ -103,11 +107,24 @@ display: inline-block;
 text-align: center;
 width: 100%;
 }#scorename{
-color:#B3A3BA
+color: black;
+text-shadow:
+0 0 2px rgba(202,228,225,0.92),
+0 0 10px rgba(202,228,225,0.34),
+0 0 4px rgba(30,132,242,0.52),
+0 0 7px rgba(30,132,242,0.92),
+0 0 11px rgba(30,132,242,0.78),
+0 0 16px rgba(30,132,242,0.92);
+
+
 }#score{
+position: absolute;
 margin: auto;
 text-align: center;
 color: lavender;
+z-index: 20;
+bottom: 2%;
+right: 1%;
 }
  
  #mode_select{
@@ -188,5 +205,33 @@ h5{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    color: lavender; 
+    color: black;
+  text-shadow:
+0 0 2px rgba(202,228,225,0.92),
+0 0 10px rgba(202,228,225,0.34),
+0 0 4px rgb(78,223,223);
+}
+
+#title{
+transform-origin: 0 0;
+transform: rotate(-35deg);
+color: #c6e2ff;
+text-shadow:
+0 0 2px rgba(202,228,225,0.92),
+0 0 10px rgba(202,228,225,0.34),
+0 0 4px rgba(30,132,242,0.52),
+0 0 7px rgba(30,132,242,0.92),
+0 0 11px rgba(30,132,242,0.78),
+0 0 16px rgba(30,132,242,0.92);
+font-family: "Vibur", cursive;
+font-size: 400%;
+margin-left: 30px;
+margin-bottom: -40px;
+margin-top: 6%;
+}
+
+
+.top_drop{
+    background:#7861f4;
+    text-align: center;
 }

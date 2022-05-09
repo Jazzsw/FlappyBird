@@ -10,12 +10,16 @@
 </head>
 
 <body>
+
     <h2 id = 'score'>Score: 0</h2>
     <div id='container'>
         <div id="sprite"></div>
         <button id="start">Start Game</button>
+
         <div id="death_popup">
         <h2 id ='deathMsg'>GAME OVER!</h2>
+        <h3 id="enterName">Enter name to save score</h3>
+        <input type="text" id="username" placeholder = "Username"></input><button id="submit_score">Save</button>
         <button id ="replay">Play Again</button>
     </div>
     </div>
@@ -24,8 +28,9 @@
         <h2 id="scorename">Scores</h2>
         <input label="Easy" type="radio" id="easy" name="mode" checked>
         <input label="Challenging" type="radio" id="hard" name="mode">
-        <div id="scoreboard">
-    
+        <div id="scoreboard_easy">
+            </div>
+            <div id="scoreboard_hard">
         </div>
     </div>
 
@@ -35,7 +40,7 @@
             <input label="Easy" type="radio" id="mode_easy" name="mode2" checked>
             <input label="Challenging" type="radio" id="mode_hard" name="mode2">
         </div>
-  
+   
       
 
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
@@ -45,22 +50,25 @@
     const firebaseConfig = {
   apiKey: "AIzaSyBNSiRO5XRUBz_MKA5F1HiUrxoUypL1mPw",
   authDomain: "flappy-scores.firebaseapp.com",
+  databaseURL: "https://flappy-scores-default-rtdb.firebaseio.com",
   projectId: "flappy-scores",
   storageBucket: "flappy-scores.appspot.com",
   messagingSenderId: "916803610806",
   appId: "1:916803610806:web:a1d8b677fd9a283eb29e17",
   measurementId: "G-BP1VNFCNT1"
 };
-
+   
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
     </script>
 
     <script>
 
+var FrameWidth = window.innerWidth
+var width = FrameWidth*0.75
 
         const C_HEIGHT = 500;
-        const C_WIDTH = 1000;
+        const C_WIDTH = width;
         const S_START_Y = 500 / 2;
         const S_START_X = C_WIDTH / 3;
         const S_WIDTH = 50;
@@ -70,6 +78,8 @@ const database = firebase.database();
         const CLOSE_PIPES =[]
         score = 0;
         dead = 'false'
+
+        document.getElementById('scoreboard_hard').style.display = 'none'//=====
 
         function sprite_init() {
             var death_msg = document.getElementById('deathMsg')
@@ -87,7 +97,7 @@ const database = firebase.database();
             let grass = document.createElement('div')
             grass.style.position = 'absolute'
             grass.style.height = "10px"
-            grass.style.width = '1000px';
+            grass.style.width = '100%';
             grass.style.bottom = '0px'
             grass.style.left = '0px'
             grass.style.background = "#68507B"
@@ -96,7 +106,7 @@ const database = firebase.database();
 
             let roof = document.createElement('div')
             roof.style.position = 'absolute'
-            roof.style.width = '1000px';
+            roof.style.width = '100%';
             roof.style.height = "10px"
             roof.style.background = "#68507B"
             container.appendChild(roof)
@@ -180,16 +190,7 @@ const database = firebase.database();
                     pipe_btm.remove()
                     pipe_top.remove()
                 }
-            //     if (dead=="true"){
-                    
-            //     clearInterval(interval)
-            // }
             },speed)
-
-            
-
-
-
         }
 
         function is_death(){
@@ -219,16 +220,11 @@ const database = firebase.database();
 
 
 function scoreCount(){
-   //let sprite_left = S_START_X
     let interval = setInterval(function(){
-        // for (let i =0; i<ALL_PIPES.length; i++){
-            // if(parseInt(ALL_PIPES[i][0].style.left) < S_START_X + S_WIDTH && parseInt(ALL_PIPES[i][0].style.left) + PIPE_WIDTH > S_START_X){
                         scoreBord = document.getElementById('score')
                         score = score+1
-                        console.log(score)
                         scoreBord.innerHTML = ("Score: " + score)
-                    // }
-                // }
+                  
                 if (dead=="true"){
                     clearInterval(interval)
                     var death_msg = document.getElementById('deathMsg')
@@ -236,13 +232,10 @@ function scoreCount(){
                     var death_popup = document.getElementById('death_popup')
                     death_popup.style.display = 'block'
                     death_msg.style.display= 'block'
-                    replay.style.display ='block'
-                    
+                    replay.style.display ='block'   
                 }
 
-                },200)
-
-                
+                },400)                
 }
 
 
@@ -283,12 +276,213 @@ document.getElementById('start').addEventListener('click',function(){
     })
 
 
-
 document.getElementById('replay').addEventListener('click',function(){
 window.location.reload()
+    })
+
+
+
+
+document.getElementById('submit_score').addEventListener('click',function(){
+
+let name = document.getElementById('username').value;
+let scoreNum = score
+
+
+
+
+if (document.getElementById('mode_easy').checked){
+    database.ref("/easy").push({
+        data: {
+            username: name,
+            score: scoreNum,
+        }
+    })
+   
+    
+}else if(document.getElementById('mode_hard').checked){
+    database.ref("/hard").push({
+        data: {
+            username: name,
+            score: scoreNum,
+        }
+    })
+}
+console.log(name + " got a score of "+ scoreNum)
+})
+
+
+
+
+function scoreboard(){
+
+    var scores_easy = []
+    var names_easy = []
+    var scores_hard = []
+    var names_hard = []
+
+let interval = setInterval(function(){
+    if(document.getElementById('hard').checked){
+       document.getElementById('scoreboard_hard').style.display = "block"
+       document.getElementById('scoreboard_easy').style.display = "none"
+    }else if(document.getElementById('easy').checked){
+       document.getElementById('scoreboard_easy').style.display = "block"
+       document.getElementById('scoreboard_hard').style.display = "none"
+    }
+
+},200);
+
+//=====EASY=======
+    database.ref("/easy").once('value',function(snapshot){
+        var obj = snapshot.val()
+        var keysArr = (Object.keys(obj))
+        var length = keysArr.length
+
+        for (i=0; i<length; i++) {
+            object = (obj[keysArr[i]])
+            raw = (object.data)
+            scores_easy.push(raw.score)
+        }
+        for (i=0; i<length; i++) {
+            object = (obj[keysArr[i]])
+            raw = (object.data)
+            names_easy.push(raw.username)
+        }
+
+
+    var len = scores_easy.length;
+   for (var i = len-1; i>=0; i--){
+     for(var j = 1; j<=i; j++){
+       if(scores_easy[j-1]<scores_easy[j]){
+           var temp = scores_easy[j-1];
+           var temp2 = names_easy[j-1]
+           scores_easy[j-1] = scores_easy[j];
+           names_easy[j-1] = names_easy[j];
+           scores_easy[j] = temp;
+           names_easy[j] = temp2;
+        }
+     }
+   }
+
+   for (i=0; i<10; i++){
+    var name_score = document.createElement('h5')
+    var txtNode = document.createTextNode((i+1)+ '. '+ names_easy[i]+' - Score: ' + scores_easy[i])
+    name_score.appendChild(txtNode)
+    document.getElementById('scoreboard_easy').appendChild(name_score)
+
+    if (i==0){
+        name_score.style.color = '#28193D'
+        name_score.style.fontSize = '20px'
+    }
+   }
+
+
+   var top_100_easy = document.createElement('select')
+   document.getElementById('scoreboard_easy').appendChild(top_100_easy)
+
+   var show_more = document.createElement('option')
+   var show_text = document.createTextNode('Show More')
+   show_more.appendChild(show_text)
+   top_100_easy.appendChild(show_more)
+
+   for (i=10; i<100; i++){
+
+    var name_score = document.createElement('option')
+    var txtNode = document.createTextNode((i+1)+ '. '+ names_easy[i]+' - Score: ' + scores_easy[i])
+    name_score.appendChild(txtNode)
+    top_100_easy.appendChild(name_score)
+
+    
+   }
+
+       //=== ====== easy=====
+})
+
+
+//=============HARD============
+database.ref("/hard").once('value',function(snapshot){
+        var obj = snapshot.val()
+        var keysArr = (Object.keys(obj))
+        var length = keysArr.length
+
+        for (i=0; i<length; i++) {
+            object = (obj[keysArr[i]])
+            raw = (object.data)
+            scores_hard.push(raw.score)
+        }
+        for (i=0; i<length; i++) {
+            object = (obj[keysArr[i]])
+            raw = (object.data)
+            names_hard.push(raw.username)
+        }
+
+
+    var len = scores_hard.length;
+   for (var i = len-1; i>=0; i--){
+     for(var j = 1; j<=i; j++){
+       if(scores_hard[j-1]<scores_hard[j]){
+           var temp = scores_hard[j-1];
+           var temp2 = names_hard[j-1]
+           scores_hard[j-1] = scores_hard[j];
+           names_hard[j-1] = names_hard[j];
+           scores_hard[j] = temp;
+           names_hard[j] = temp2;
+        }
+     }
+   }
+
+   for (i=0; i<10; i++){
+    var name_score = document.createElement('h5')
+    var txtNode = document.createTextNode((i+1)+ '. '+ names_hard[i]+' - Score: ' + scores_hard[i])
+    name_score.appendChild(txtNode)
+    document.getElementById('scoreboard_hard').appendChild(name_score)
+
+    if (i==0){
+        name_score.style.color = '#28193D'
+        name_score.style.fontSize = '20px'
+    }
+    
+   }
+
+
+   var top_100_hard = document.createElement('select')
+   document.getElementById('scoreboard_hard').appendChild(top_100_hard)
+
+   var show_more = document.createElement('option')
+   var show_text = document.createTextNode('Show More')
+   show_more.appendChild(show_text)
+   top_100_hard.appendChild(show_more)
+
+   for (i=10; i<100; i++){
+
+    var name_score = document.createElement('option')
+    var txtNode = document.createTextNode((i+1)+ '. '+ names_hard[i]+' - Score: ' + scores_hard[i])
+    name_score.appendChild(txtNode)
+    top_100_hard.appendChild(name_score)
+   }
+    
 
     })
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+      scoreboard()  
 
     </script>
 </body>

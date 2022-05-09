@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta meta name="viewport" content= "width=device-width, user-scalable=no">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Flappy Bird</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -65,10 +65,10 @@ const database = firebase.database();
 
     <script>
 
-// if (window.innerWidth <= 800){
-//     document.getElementById("score_div").style.display = "none";
-//     document.getElementById("container").style.width = "100%";
-// }
+if (window.innerWidth <= 800){
+    document.getElementById("score_div").style.display = "none";
+    document.getElementById("container").style.width = "100%";
+}
 
 
 var FrameWidth = window.innerWidth

@@ -412,7 +412,7 @@ database.ref("/hard").once('value',function(snapshot){
 
 
    var top_100_hard = document.createElement('select')
-   top_100_easy.className ='top_drop'
+   top_100_hard.className ='top_drop'
    document.getElementById('scoreboard_hard').appendChild(top_100_hard)
 
    var show_more = document.createElement('option')

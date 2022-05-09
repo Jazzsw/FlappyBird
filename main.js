@@ -95,8 +95,8 @@ var width = FrameWidth*0.75
         function pipes_init(){
             let pipe_btm = document.createElement('div')
             let pipe_top = document.createElement('div')
-            pipe_btm.className = 'pipe_piece'
-            pipe_top.className = 'pipe_piece'
+            pipe_btm.id = 'pipe_btm'
+            pipe_top.id= 'pipe_top'
             pipe_btm.style.position = 'absolute'
             pipe_top.style.position = 'absolute'
             pipe_top.style.background = "#68507B";
@@ -291,7 +291,8 @@ let interval = setInterval(function(){
 
     if (score==10){
         document.getElementById('sprite').style.background='pink'
-        document.getElementsByClassName('pipe_piece').style.background ='#03045e'
+        document.getElementById('pipe_top').style.background = '#03045e'
+        document.getElementById('pipe_btm').style.background = '#03045e'
     }
 
 },200);

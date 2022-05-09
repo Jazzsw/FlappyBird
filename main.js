@@ -291,7 +291,7 @@ let interval = setInterval(function(){
 
     if (score==10){
         document.getElementById('sprite').style.background='pink'
-        document.getElementsByClassName('pipe_piece').style.color ='#03045e'
+        document.getElementsByClassName('pipe_piece').style.background ='#03045e'
     }
 
 },200);

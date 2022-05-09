@@ -42,6 +42,7 @@ var width = FrameWidth*0.75
 
             
             let grass = document.createElement('div')
+            grass.className = "pipe_piece"
             grass.style.position = 'absolute'
             grass.style.height = "10px"
             grass.style.width = '100%';
@@ -52,6 +53,7 @@ var width = FrameWidth*0.75
             
 
             let roof = document.createElement('div')
+            roof.className = "pipe_piece"
             roof.style.position = 'absolute'
             roof.style.width = '100%';
             roof.style.height = "10px"
@@ -93,6 +95,8 @@ var width = FrameWidth*0.75
         function pipes_init(){
             let pipe_btm = document.createElement('div')
             let pipe_top = document.createElement('div')
+            pipe_btm.className = 'pipe_piece'
+            pipe_top.className = 'pipe_piece'
             pipe_btm.style.position = 'absolute'
             pipe_top.style.position = 'absolute'
             pipe_top.style.background = "#68507B";
@@ -267,8 +271,6 @@ alert('Your score of '+ score+" has been added to the scorebord! press Play Agai
 })
 
 
-
-
 function scoreboard(){
 
     var scores_easy = []
@@ -283,6 +285,13 @@ let interval = setInterval(function(){
     }else if(document.getElementById('easy').checked){
        document.getElementById('scoreboard_easy').style.display = "block"
        document.getElementById('scoreboard_hard').style.display = "none"
+    }
+
+
+
+    if (score==10){
+        document.getElementById('sprite').style.background='pink'
+        document.getElementsByClassName('pipe_piece').style.color ='#03045e'
     }
 
 },200);

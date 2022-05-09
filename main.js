@@ -198,6 +198,8 @@ sprite_init();
 document.getElementById('start').addEventListener('click',function(){
 
     document.getElementById('start').style.display = 'none'
+    document.getElementById('mode_easy').disabled = true
+    document.getElementById('mode_hard').disabled = true
 
     if (document.getElementById('mode_easy').checked){
         gravity_init(10);

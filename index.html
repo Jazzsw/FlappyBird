@@ -137,6 +137,10 @@ var width = FrameWidth*0.75
                     sprite.style.top = parseInt(sprite.style.top) - mod + "px";
                 }
             })
+
+            document.addEventListener("touchstart",function(){
+                sprite.style.top = parseInt(sprite.style.top) - mod + "px";
+            })
         }
 
         function pipes_init(){

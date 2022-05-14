@@ -53,6 +53,7 @@ body {
 height: 96vh;
 /* text-align: center; */
 /* background: #D9D8D9; */
+overflow-y: hidden; 
 background: #111111;
 }
 

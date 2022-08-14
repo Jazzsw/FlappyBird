@@ -55,6 +55,7 @@ height: 96vh;
 /* background: #D9D8D9; */
 overflow-y: hidden; 
 background: #111111;
+overflow-y: hidden;
 }
 
 .radio {
